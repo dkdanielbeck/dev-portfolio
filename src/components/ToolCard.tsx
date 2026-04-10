@@ -80,13 +80,21 @@ export function ToolCard({ tool, onRemove, onEdit }: ToolCardProps) {
       
       <div className="p-5 flex flex-col flex-grow relative">
         <div className="flex items-center gap-3 mb-2">
-          {domain && (
-            <img 
-              src={`https://www.google.com/s2/favicons?domain=${domain}&sz=64`} 
-              alt="" 
-              className="w-6 h-6 rounded flex-shrink-0 bg-white/10" 
-              loading="lazy"
-            />
+          {tool.url && (
+            <div className="w-6 h-6 rounded flex-shrink-0 bg-white/10 flex items-center justify-center overflow-hidden">
+              <img 
+                src={`https://api.microlink.io/?url=${encodeURIComponent(tool.url)}&embed=logo.url`} 
+                alt="" 
+                className="w-full h-full object-contain" 
+                loading="lazy"
+                onError={(e) => {
+                  /* Fallback to Google S2 if microlink fails to find a logo */
+                  if (domain) {
+                    e.currentTarget.src = `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
+                  }
+                }}
+              />
+            </div>
           )}
           <h3 className="text-xl font-semibold text-foreground group-hover:text-primary transition-colors truncate">
             {tool.name}
