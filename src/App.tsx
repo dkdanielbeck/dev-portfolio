@@ -19,6 +19,8 @@ function App() {
 
   const filteredTools = tools.filter(tool =>
     tool.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    tool.url.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    tool.addedBy?.toLowerCase().includes(searchQuery.toLowerCase()) ||
     tool.description.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
