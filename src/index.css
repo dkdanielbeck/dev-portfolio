@@ -1,18 +1,42 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: #0B0E14; /* Deep modern dark */
-  --color-foreground: #FAFAFA; /* Off-white text */
-  --color-card: #151A23; /* Slightly lighter for cards */
-  --color-card-hover: #1A202C; /* Hover state for cards */
-  --color-border: #4A5568; /* Higher contrast borders */
-  --color-primary: #6366F1; /* Indigo accent */
-  --color-primary-hover: #4F46E5;
+  --color-background: var(--bg-color);
+  --color-foreground: var(--fg-color);
+  --color-card: var(--card-color);
+  --color-card-hover: var(--card-hover-color);
+  --color-border: var(--border-color);
+  --color-primary: var(--primary-color);
+  --color-primary-hover: var(--primary-hover-color);
 }
 
 :root {
-  background-color: var(--color-background);
-  color: var(--color-foreground);
+  --bg-color: #F8FAFC;
+  --fg-color: #0F172A;
+  --card-color: #FFFFFF;
+  --card-hover-color: #F1F5F9;
+  --border-color: #CBD5E1;
+  --primary-color: #4F46E5;
+  --primary-hover-color: #4338CA;
+  --header-bg: rgba(255, 255, 255, 0.7);
+  
+  background-color: var(--bg-color);
+  color: var(--fg-color);
+  color-scheme: light;
+}
+
+.dark {
+  --bg-color: #0B0E14;
+  --fg-color: #FAFAFA;
+  --card-color: #151A23;
+  --card-hover-color: #1A202C;
+  --border-color: #4A5568;
+  --primary-color: #6366F1;
+  --primary-hover-color: #4F46E5;
+  --header-bg: rgba(11, 14, 20, 0.7);
+  
+  background-color: var(--bg-color);
+  color: var(--fg-color);
   color-scheme: dark;
 }
 
@@ -26,7 +50,7 @@ body {
 /* Custom Utilities if needed */
 @layer utilities {
   .glass-header {
-    background: rgba(11, 14, 20, 0.7);
+    background: var(--header-bg);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--color-border);

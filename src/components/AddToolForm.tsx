@@ -19,7 +19,7 @@ export function AddToolForm({ onSubmit, onCancel, initialTool }: AddToolFormProp
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+
     let finalImageUrl = imageUrl.trim();
 
     if (imageFile) {
@@ -40,53 +40,53 @@ export function AddToolForm({ onSubmit, onCancel, initialTool }: AddToolFormProp
       imageUrl: finalImageUrl,
       ...(addedBy.trim() ? { addedBy: addedBy.trim() } : {}),
     });
-    
+
     setIsSubmitting(false);
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       <div className="space-y-1">
-        <label htmlFor="name" className="text-sm font-medium text-gray-300">Tool Name</label>
+        <label htmlFor="name" className="text-sm font-medium text-foreground/90">Tool Name</label>
         <input
           id="name"
           type="text"
           required
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="w-full px-4 py-2.5 bg-background border border-border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all placeholder:text-gray-600"
+          className="w-full px-4 py-2.5 bg-background border border-border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all placeholder:text-foreground/50"
           placeholder="e.g. Regex Tester"
         />
       </div>
 
       <div className="space-y-1">
-        <label htmlFor="description" className="text-sm font-medium text-gray-300">Description</label>
+        <label htmlFor="description" className="text-sm font-medium text-foreground/90">Description</label>
         <textarea
           id="description"
           required
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           rows={3}
-          className="w-full px-4 py-2.5 bg-background border border-border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all placeholder:text-gray-600 resize-none"
+          className="w-full px-4 py-2.5 bg-background border border-border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all placeholder:text-foreground/50 resize-none"
           placeholder="Briefly describe what this tool does..."
         />
       </div>
 
       <div className="space-y-1">
-        <label htmlFor="url" className="text-sm font-medium text-gray-300">Project URL</label>
+        <label htmlFor="url" className="text-sm font-medium text-foreground/90">Project URL</label>
         <input
           id="url"
           type="url"
           required
           value={url}
           onChange={(e) => setUrl(e.target.value)}
-          className="w-full px-4 py-2.5 bg-background border border-border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all placeholder:text-gray-600"
+          className="w-full px-4 py-2.5 bg-background border border-border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all placeholder:text-foreground/50"
           placeholder="https://..."
         />
       </div>
 
       <div className="space-y-1">
-        <label htmlFor="addedBy" className="text-sm font-medium text-gray-300">
+        <label htmlFor="addedBy" className="text-sm font-medium text-foreground/90">
           Added By <span className="text-gray-500 font-normal">(Optional)</span>
         </label>
         <input
@@ -94,23 +94,23 @@ export function AddToolForm({ onSubmit, onCancel, initialTool }: AddToolFormProp
           type="text"
           value={addedBy}
           onChange={(e) => setAddedBy(e.target.value)}
-          className="w-full px-4 py-2.5 bg-background border border-border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all placeholder:text-gray-600"
-          placeholder="Your Name / Team"
+          className="w-full px-4 py-2.5 bg-background border border-border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all placeholder:text-foreground/50"
+          placeholder="Your Name"
         />
       </div>
 
       <div className="space-y-3 pt-2">
         <div>
-          <label className="text-sm font-medium text-gray-300">
+          <label className="text-sm font-medium text-foreground/90">
             Image <span className="text-gray-500 font-normal">(Optional)</span>
           </label>
           <p className="text-xs text-gray-400 mt-1 leading-relaxed">
-            Provide an image URL, upload a file, or leave both blank and we will automatically capture a screenshot of the site/tool for you.
+            Provide an image URL, upload a file, or leave both blank and we will <b>automatically capture a screenshot of the site/tool for you.</b>
           </p>
         </div>
-        
+
         <div className="space-y-3 bg-card-hover/30 p-4 rounded-xl border border-border/50 hidden">
-           {/* Fallback container to maintain spacing */}
+          {/* Fallback container to maintain spacing */}
         </div>
 
         <div className="space-y-3 p-4 rounded-xl border border-border bg-background/50">
@@ -122,12 +122,12 @@ export function AddToolForm({ onSubmit, onCancel, initialTool }: AddToolFormProp
               setImageUrl(e.target.value);
               if (e.target.value) setImageFile(null);
             }}
-            className="w-full px-4 py-2.5 bg-background border border-border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all placeholder:text-gray-600"
+            className="w-full px-4 py-2.5 bg-background border border-border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all placeholder:text-foreground/50"
             placeholder="Image URL"
             disabled={!!imageFile}
             title={imageFile ? "Clear the file selection below to use a URL" : ""}
           />
-          
+
           <div className="flex flex-col sm:flex-row sm:items-center gap-3">
             <div className="flex items-center gap-2">
               <div className="h-[1px] w-8 bg-border"></div>
