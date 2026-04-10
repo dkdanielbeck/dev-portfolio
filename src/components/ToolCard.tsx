@@ -18,6 +18,15 @@ export function ToolCard({ tool, onRemove, onEdit }: ToolCardProps) {
     }
   };
 
+  const getDomain = () => {
+    try {
+      return new URL(tool.url).hostname;
+    } catch {
+      return '';
+    }
+  };
+  const domain = getDomain();
+
   return (
     <div 
       onClick={openUrl}
@@ -70,9 +79,19 @@ export function ToolCard({ tool, onRemove, onEdit }: ToolCardProps) {
       </div>
       
       <div className="p-5 flex flex-col flex-grow relative">
-        <h3 className="text-xl font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
-          {tool.name}
-        </h3>
+        <div className="flex items-center gap-3 mb-2">
+          {domain && (
+            <img 
+              src={`https://www.google.com/s2/favicons?domain=${domain}&sz=64`} 
+              alt="" 
+              className="w-6 h-6 rounded flex-shrink-0 bg-white/10" 
+              loading="lazy"
+            />
+          )}
+          <h3 className="text-xl font-semibold text-foreground group-hover:text-primary transition-colors truncate">
+            {tool.name}
+          </h3>
+        </div>
         <p className="text-sm text-gray-400 line-clamp-2 leading-relaxed flex-grow">
           {tool.description}
         </p>
