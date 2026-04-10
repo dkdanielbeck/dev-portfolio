@@ -17,8 +17,8 @@ function App() {
 
   const editingTool = editingToolId ? tools.find(t => t.id === editingToolId) : null;
 
-  const filteredTools = tools.filter(tool => 
-    tool.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+  const filteredTools = tools.filter(tool =>
+    tool.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     tool.description.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -59,7 +59,7 @@ function App() {
               A collection of developer tools and utilities created by you and your colleagues. Add your own by clicking the 'Add tool' button.
             </p>
           </div>
-          
+
           {tools.length > 0 && (
             <div className="relative w-full lg:w-80">
               <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
@@ -75,12 +75,12 @@ function App() {
                 className="block w-full pl-10 pr-10 py-3 border border-border rounded-xl leading-5 bg-card/50 text-gray-200 placeholder-gray-500 focus:outline-none focus:bg-card focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all sm:text-sm"
               />
               {searchQuery && (
-                <button 
+                <button
                   onClick={() => setSearchQuery('')}
                   className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-gray-300 transition-colors"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
                   </svg>
                 </button>
               )}
