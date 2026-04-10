@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import type { Tool } from '../types';
 
 interface ToolCardProps {
@@ -7,39 +8,108 @@ interface ToolCardProps {
 }
 
 export function ToolCard({ tool, onRemove, onEdit }: ToolCardProps) {
+  const [iconUrl, setIconUrl] = useState<string | null>(null);
+  const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
+
+  useEffect(() => {
+    if (!tool.url) {
+      setIconUrl(null);
+      return;
+    }
+
+    let isMounted = true;
+
+    // We query the microlink JSON API asynchronously to strictly check if a real logo exists.
+    // If it doesn't, we receive null and naturally cascade to our beautiful CSS UI Chip!
+    fetch(`https://api.microlink.io/?url=${encodeURIComponent(tool.url)}`)
+      .then(res => res.json())
+      .then(data => {
+        if (!isMounted) return;
+        if (data.status === 'success' && data.data?.logo?.url) {
+          setIconUrl(data.data.logo.url);
+        } else {
+          setIconUrl(null);
+        }
+      })
+      .catch(() => {
+        if (!isMounted) return;
+        setIconUrl(null);
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [tool.url]);
+
   const openUrl = () => {
-    window.open(tool.url, '_blank', 'noopener,noreferrer');
+    if (!isConfirmingDelete) {
+      window.open(tool.url, '_blank', 'noopener,noreferrer');
+    }
   };
 
-  const handleRemove = (e: React.MouseEvent) => {
+  const handleRemoveClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsConfirmingDelete(true);
+  };
+
+  const confirmDelete = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (onRemove) {
       onRemove(tool.id);
     }
   };
 
-  const getDomain = () => {
-    try {
-      return new URL(tool.url).hostname;
-    } catch {
-      return '';
-    }
+  const cancelDelete = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsConfirmingDelete(false);
   };
-  const domain = getDomain();
 
   return (
     <div 
       onClick={openUrl}
-      className="group relative flex flex-col bg-card border border-border rounded-2xl overflow-hidden hover:border-primary-hover transition-all duration-300 cursor-pointer shadow-lg hover:shadow-primary/10 hover:-translate-y-1"
+      className={`group relative flex flex-col bg-card border rounded-2xl overflow-hidden transition-all duration-300 shadow-lg ${
+        isConfirmingDelete 
+          ? 'border-red-500/50 shadow-red-500/10' 
+          : 'border-border hover:border-primary-hover hover:shadow-primary/10 hover:-translate-y-1 cursor-pointer'
+      }`}
     >
+      {/* Delete Confirmation Overlay */}
+      {isConfirmingDelete && (
+        <div className="absolute inset-0 z-50 bg-background/80 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center animate-in fade-in duration-200">
+          <div className="w-12 h-12 rounded-full bg-red-500/10 flex items-center justify-center mb-4 text-red-500">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M3 6h18"></path>
+              <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+              <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+            </svg>
+          </div>
+          <h4 className="text-lg font-semibold text-foreground mb-1">Delete Project?</h4>
+          <p className="text-sm text-gray-400 mb-6">This action cannot be undone.</p>
+          <div className="flex gap-3 w-full">
+            <button 
+              onClick={cancelDelete}
+              className="flex-1 px-4 py-2 rounded-xl bg-card border border-border text-foreground hover:bg-border/50 transition-colors text-sm font-medium"
+            >
+              Cancel
+            </button>
+            <button 
+              onClick={confirmDelete}
+              className="flex-1 px-4 py-2 rounded-xl bg-red-600 text-white hover:bg-red-700 transition-colors text-sm font-medium shadow-lg shadow-red-500/20"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      )}
+
       <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-all focus-within:opacity-100 z-10">
-        {onEdit && (
+        {onEdit && !isConfirmingDelete && (
           <button
             onClick={(e) => {
               e.stopPropagation();
               onEdit(tool.id);
             }}
-            className="p-2 rounded-full bg-background/80 hover:bg-primary/90 text-gray-400 hover:text-white transition-all backdrop-blur-sm"
+            className="p-2 rounded-full bg-background/80 hover:bg-primary/90 text-gray-400 hover:text-white transition-all backdrop-blur-sm shadow-sm"
             title="Edit tool"
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -48,10 +118,10 @@ export function ToolCard({ tool, onRemove, onEdit }: ToolCardProps) {
           </button>
         )}
 
-        {onRemove && (
+        {onRemove && !isConfirmingDelete && (
           <button
-            onClick={handleRemove}
-            className="p-2 rounded-full bg-background/80 hover:bg-red-500/90 text-gray-400 hover:text-white transition-all backdrop-blur-sm"
+            onClick={handleRemoveClick}
+            className="p-2 rounded-full bg-background/80 hover:bg-red-500/90 text-gray-400 hover:text-white transition-all backdrop-blur-sm shadow-sm"
             title="Remove tool"
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -80,20 +150,21 @@ export function ToolCard({ tool, onRemove, onEdit }: ToolCardProps) {
       
       <div className="p-5 flex flex-col flex-grow relative">
         <div className="flex items-center gap-3 mb-2">
-          {tool.url && (
+          {iconUrl ? (
             <div className="w-6 h-6 rounded flex-shrink-0 bg-white/10 flex items-center justify-center overflow-hidden">
               <img 
-                src={`https://api.microlink.io/?url=${encodeURIComponent(tool.url)}&embed=logo.url`} 
+                src={iconUrl} 
                 alt="" 
                 className="w-full h-full object-contain" 
                 loading="lazy"
-                onError={(e) => {
-                  /* Fallback to Google S2 if microlink fails to find a logo */
-                  if (domain) {
-                    e.currentTarget.src = `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
-                  }
+                onError={() => {
+                  setIconUrl(null);
                 }}
               />
+            </div>
+          ) : (
+            <div className="w-6 h-6 rounded flex-shrink-0 bg-primary/10 flex items-center justify-center overflow-hidden border border-primary/20">
+              <span className="text-[10px] font-bold text-primary uppercase">{tool.name.charAt(0)}</span>
             </div>
           )}
           <h3 className="text-xl font-semibold text-foreground group-hover:text-primary transition-colors truncate">
