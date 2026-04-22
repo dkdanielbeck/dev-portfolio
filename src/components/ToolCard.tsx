@@ -171,7 +171,10 @@ export function ToolCard({ tool, onRemove, onEdit }: ToolCardProps) {
             {tool.name}
           </h3>
         </div>
-        <p className="text-sm text-gray-400 line-clamp-2 leading-relaxed flex-grow">
+        <p 
+          className="text-sm text-gray-400 line-clamp-2 leading-relaxed flex-grow"
+          title={tool.description}
+        >
           {tool.description}
         </p>
 
