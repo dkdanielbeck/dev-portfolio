@@ -171,12 +171,32 @@ export function ToolCard({ tool, onRemove, onEdit }: ToolCardProps) {
             {tool.name}
           </h3>
         </div>
-        <p 
-          className="text-sm text-gray-400 line-clamp-2 leading-relaxed flex-grow"
-          title={tool.description}
-        >
-          {tool.description}
-        </p>
+        <div className="relative group/tooltip flex-grow mt-1">
+          <p className="text-sm text-gray-400 line-clamp-2 leading-relaxed pr-6 cursor-help">
+            {tool.description}
+          </p>
+          
+          {/* Tooltip Indicator */}
+          {tool.description.length > 85 && (
+            <div className="absolute top-0 right-0 text-gray-500 opacity-40 group-hover/tooltip:opacity-100 group-hover/tooltip:text-primary transition-all duration-200 pointer-events-none">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M12 16v-4"></path>
+                <path d="M12 8h.01"></path>
+              </svg>
+            </div>
+          )}
+
+          {/* Custom Styled Tooltip */}
+          {tool.description.length > 85 && (
+            <div className="absolute left-0 bottom-full mb-2 w-full opacity-0 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:visible transition-all duration-200 z-50 pointer-events-none translate-y-2 group-hover/tooltip:translate-y-0">
+              <div className="bg-card/95 backdrop-blur-md border border-border shadow-xl rounded-xl p-4 text-sm text-foreground relative shadow-primary/5">
+                <p className="leading-relaxed max-h-[150px] overflow-y-auto">{tool.description}</p>
+                <div className="absolute -bottom-1.5 left-6 w-3 h-3 bg-card border-b border-r border-border transform rotate-45"></div>
+              </div>
+            </div>
+          )}
+        </div>
 
         {tool.addedBy && (
           <div className="mt-4 flex items-center gap-2 text-xs text-gray-500 font-medium">
