@@ -65,13 +65,12 @@ export function ToolCard({ tool, onRemove, onEdit }: ToolCardProps) {
   };
 
   return (
-    <div 
+    <div
       onClick={openUrl}
-      className={`group relative flex flex-col bg-card border rounded-2xl overflow-hidden transition-all duration-300 shadow-lg ${
-        isConfirmingDelete 
-          ? 'border-red-500/50 shadow-red-500/10' 
+      className={`group relative flex flex-col bg-card border rounded-2xl overflow-hidden transition-all duration-300 shadow-lg ${isConfirmingDelete
+          ? 'border-red-500/50 shadow-red-500/10'
           : 'border-border hover:border-primary-hover hover:shadow-primary/10 hover:-translate-y-1 cursor-pointer'
-      }`}
+        }`}
     >
       {/* Delete Confirmation Overlay */}
       {isConfirmingDelete && (
@@ -86,13 +85,13 @@ export function ToolCard({ tool, onRemove, onEdit }: ToolCardProps) {
           <h4 className="text-lg font-semibold text-foreground mb-1">Delete Project?</h4>
           <p className="text-sm text-gray-400 mb-6">This action cannot be undone.</p>
           <div className="flex gap-3 w-full">
-            <button 
+            <button
               onClick={cancelDelete}
               className="flex-1 px-4 py-2 rounded-xl bg-card border border-border text-foreground hover:bg-border/50 transition-colors text-sm font-medium"
             >
               Cancel
             </button>
-            <button 
+            <button
               onClick={confirmDelete}
               className="flex-1 px-4 py-2 rounded-xl bg-red-600 text-white hover:bg-red-700 transition-colors text-sm font-medium shadow-lg shadow-red-500/20"
             >
@@ -134,8 +133,8 @@ export function ToolCard({ tool, onRemove, onEdit }: ToolCardProps) {
       </div>
       <div className="aspect-[16/9] w-full overflow-hidden bg-background relative border-b border-border">
         {tool.imageUrl ? (
-          <img 
-            src={tool.imageUrl} 
+          <img
+            src={tool.imageUrl}
             alt={tool.name}
             className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105 opacity-90 group-hover:opacity-100"
             loading="lazy"
@@ -147,15 +146,15 @@ export function ToolCard({ tool, onRemove, onEdit }: ToolCardProps) {
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-card/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
       </div>
-      
+
       <div className="p-5 flex flex-col flex-grow relative">
         <div className="flex items-center gap-3 mb-2">
           {iconUrl ? (
             <div className="w-6 h-6 rounded flex-shrink-0 bg-white/10 flex items-center justify-center overflow-hidden">
-              <img 
-                src={iconUrl} 
-                alt="" 
-                className="w-full h-full object-contain" 
+              <img
+                src={iconUrl}
+                alt=""
+                className="w-full h-full object-contain"
                 loading="lazy"
                 onError={() => {
                   setIconUrl(null);
@@ -175,27 +174,25 @@ export function ToolCard({ tool, onRemove, onEdit }: ToolCardProps) {
           <p className="text-sm text-gray-400 line-clamp-2 leading-relaxed pr-6 cursor-help">
             {tool.description}
           </p>
-          
-          {/* Tooltip Indicator */}
-          {tool.description.length > 85 && (
-            <div className="absolute top-0 right-0 text-gray-500 opacity-40 group-hover/tooltip:opacity-100 group-hover/tooltip:text-primary transition-all duration-200 pointer-events-none">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="12" cy="12" r="10"></circle>
-                <path d="M12 16v-4"></path>
-                <path d="M12 8h.01"></path>
-              </svg>
-            </div>
-          )}
 
-          {/* Custom Styled Tooltip */}
-          {tool.description.length > 85 && (
-            <div className="absolute left-0 bottom-full mb-2 w-full opacity-0 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:visible transition-all duration-200 z-50 pointer-events-none translate-y-2 group-hover/tooltip:translate-y-0">
-              <div className="bg-card/95 backdrop-blur-md border border-border shadow-xl rounded-xl p-4 text-sm text-foreground relative shadow-primary/5">
-                <p className="leading-relaxed max-h-[150px] overflow-y-auto">{tool.description}</p>
-                <div className="absolute -bottom-1.5 left-6 w-3 h-3 bg-card border-b border-r border-border transform rotate-45"></div>
-              </div>
+
+          <div className="absolute top-0 right-0 text-gray-500 opacity-40 group-hover/tooltip:opacity-100 group-hover/tooltip:text-primary transition-all duration-200 pointer-events-none">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M12 16v-4"></path>
+              <path d="M12 8h.01"></path>
+            </svg>
+          </div>
+
+
+
+          <div className="absolute left-0 bottom-full mb-2 w-full opacity-0 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:visible transition-all duration-200 z-50 pointer-events-none translate-y-2 group-hover/tooltip:translate-y-0">
+            <div className="bg-card/95 backdrop-blur-md border border-border shadow-xl rounded-xl p-4 text-sm text-foreground relative shadow-primary/5">
+              <p className="leading-relaxed max-h-[150px] overflow-y-auto">{tool.description}</p>
+              <div className="absolute -bottom-1.5 left-6 w-3 h-3 bg-card border-b border-r border-border transform rotate-45"></div>
             </div>
-          )}
+          </div>
+
         </div>
 
         {tool.addedBy && (
